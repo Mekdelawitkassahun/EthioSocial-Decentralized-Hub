@@ -16,6 +16,7 @@ import {
 import CreatePost from '../components/CreatePost';
 import PostCard from '../components/PostCard';
 import Navbar from '../components/Navbar';
+import { PostType } from '../types'; // Import PostType
 
 export default function Home() {
   const {
@@ -29,7 +30,7 @@ export default function Home() {
     logout,
     handleSwitchNetwork,
     createProfile,
-    createPost,
+    createPost, // Original createPost from hook
     likePost,
     tipPost,
     addComment,
@@ -44,6 +45,17 @@ export default function Home() {
   const [username, setUsername] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
+  
+  // ✅ WRAPPER FUNCTION: Adapts the hook's createPost to match CreatePost component's expected signature
+  const handleCreatePost = async (
+    content: string, 
+    mediaHash: string, 
+    postType: PostType
+  ) => {
+    // Call the original createPost from the hook
+    // Pass an empty array for tags (or modify based on your needs)
+    await createPost(content, mediaHash, [], postType);
+  };
   
   const handleCreateProfile = async () => {
     if (!username || !displayName) {
@@ -229,9 +241,9 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* Create Post Component */}
+        {/* Create Post Component - USING THE WRAPPER FUNCTION */}
         <div className={!profile ? 'opacity-30 grayscale pointer-events-none' : ''}>
-          <CreatePost onCreatePost={createPost} profile={profile} />
+          <CreatePost onCreatePost={handleCreatePost} profile={profile} />
         </div>
 
         {/* Feed Section Title */}
