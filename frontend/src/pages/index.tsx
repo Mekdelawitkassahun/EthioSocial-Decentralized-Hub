@@ -16,7 +16,7 @@ import {
 import CreatePost from '../components/CreatePost';
 import PostCard from '../components/PostCard';
 import Navbar from '../components/Navbar';
-import { PostType } from '../types'; // Import PostType
+import { PostType } from '../types';
 
 export default function Home() {
   const {
@@ -30,7 +30,7 @@ export default function Home() {
     logout,
     handleSwitchNetwork,
     createProfile,
-    createPost, // Original createPost from hook
+    createPost,
     likePost,
     tipPost,
     addComment,
@@ -46,15 +46,18 @@ export default function Home() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   
-  // ✅ WRAPPER FUNCTION: Adapts the hook's createPost to match CreatePost component's expected signature
+  // ✅ FIXED: Wrapper function with properly typed empty array
   const handleCreatePost = async (
     content: string, 
     mediaHash: string, 
     postType: PostType
   ) => {
+    // Create a typed empty array for tags
+    const tags: string[] = [];
+    
     // Call the original createPost from the hook
-    // Pass an empty array for tags (or modify based on your needs)
-    await createPost(content, mediaHash, [], postType);
+    // Adjust the parameter order based on what your createPost expects
+    await createPost(content, mediaHash, tags, postType);
   };
   
   const handleCreateProfile = async () => {
