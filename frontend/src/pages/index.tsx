@@ -46,7 +46,7 @@ export default function Home() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   
-  // ✅ FIXED: Pass 4 separate arguments to match createPost signature
+  // ✅ FIXED: Correct argument order - postType before tags
   const handleCreatePost = async (
     content: string, 
     mediaHash: string, 
@@ -55,8 +55,8 @@ export default function Home() {
     // Create a typed empty array for tags
     const tags: string[] = [];
     
-    // Call createPost with 4 arguments (content, mediaHash, tags, postType)
-    await createPost(content, mediaHash, tags, postType);
+    // Call createPost with correct order: content, mediaHash, postType, tags
+    await createPost(content, mediaHash, postType, tags);
   };
   
   const handleCreateProfile = async () => {
