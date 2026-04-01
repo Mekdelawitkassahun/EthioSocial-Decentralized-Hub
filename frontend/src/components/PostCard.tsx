@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { FaHeart, FaRegHeart, FaComment, FaSpinner } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaComment, FaSpinner, FaPaperPlane } from 'react-icons/fa';
 import { formatDistanceToNow } from 'date-fns';
 import { getIPFSUrl } from '../utils/ipfs';
 import Link from 'next/link';
 import { useEthioSocial } from '../hooks/useEthioSocial';
+import toast from 'react-hot-toast';
 
 interface PostCardProps {
   post: {
@@ -16,7 +17,7 @@ interface PostCardProps {
     commentCount: number;
   };
   onLike: (postId: number) => void;
-  onComment: (postId: number) => void;
+  onComment: (content: string) => Promise<void>; // ✅ CHANGED: Now expects content string
   hasLiked: boolean;
   authorProfile?: {
     username: string;
@@ -30,6 +31,9 @@ export default function PostCard({ post, onLike, onComment, hasLiked, authorProf
   const [isLiking, setIsLiking] = useState(false);
   const [authorProfile, setAuthorProfile] = useState(initialAuthorProfile);
   const [isLoadingProfile, setIsLoadingProfile] = useState(!initialAuthorProfile);
+  const [showCommentInput, setShowCommentInput] = useState(false);
+  const [commentText, setCommentText] = useState('');
+  const [isCommenting, setIsCommenting] = useState(false);
 
   useEffect(() => {
     if (!initialAuthorProfile && post.author) {
@@ -58,6 +62,26 @@ export default function PostCard({ post, onLike, onComment, hasLiked, authorProf
     setIsLiking(true);
     await onLike(post.id);
     setIsLiking(false);
+  };
+
+  // ✅ NEW: Handle comment submission
+  const handleSubmitComment = async () => {
+    if (!commentText.trim()) {
+      toast.error('Please write a comment');
+      return;
+    }
+
+    setIsCommenting(true);
+    try {
+      await onComment(commentText);
+      setCommentText('');
+      setShowCommentInput(false);
+      toast.success('Comment posted!');
+    } catch (error) {
+      toast.error('Failed to post comment');
+    } finally {
+      setIsCommenting(false);
+    }
   };
 
   return (
@@ -125,7 +149,7 @@ export default function PostCard({ post, onLike, onComment, hasLiked, authorProf
             </button>
             
             <button
-              onClick={() => onComment(post.id)}
+              onClick={() => setShowCommentInput(!showCommentInput)}
               className="flex items-center gap-2 text-gray-400 hover:text-blue-500 transition-colors group"
             >
               <div className="p-2 rounded-full group-hover:bg-blue-50 transition-all">
@@ -134,6 +158,31 @@ export default function PostCard({ post, onLike, onComment, hasLiked, authorProf
               <span className="text-sm font-bold">{post.commentCount}</span>
             </button>
           </div>
+
+          {/* ✅ NEW: Comment Input Section */}
+          {showCommentInput && (
+            <div className="mt-4 pt-4 border-t border-gray-50">
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Write a comment..."
+                  className="flex-1 px-4 py-2 bg-gray-50 border border-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  onKeyPress={(e) => e.key === 'Enter' && handleSubmitComment()}
+                  disabled={isCommenting}
+                />
+                <button
+                  onClick={handleSubmitComment}
+                  disabled={isCommenting || !commentText.trim()}
+                  className="px-4 py-2 bg-black text-white rounded-xl hover:opacity-90 disabled:opacity-50 transition-all text-sm font-medium flex items-center gap-2"
+                >
+                  {isCommenting ? <FaSpinner className="animate-spin" /> : <FaPaperPlane className="text-xs" />}
+                  <span>Post</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
