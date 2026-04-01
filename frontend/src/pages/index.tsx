@@ -57,9 +57,12 @@ export default function Home() {
     await createPost(content, mediaHash, postType, tags);
   };
   
-  // Wrapper for addComment - matches PostCard component signature
-  const handleAddComment = async (postId: number, content: string) => {
-    await addComment(postId, content);
+  // ✅ FIXED: Create a function that returns a handler for each post
+  // This matches the expected signature: (content: string) => Promise<void>
+  const getCommentHandler = (postId: number) => {
+    return async (content: string) => {
+      await addComment(postId, content);
+    };
   };
   
   const handleCreateProfile = async () => {
@@ -286,7 +289,7 @@ export default function Home() {
                   key={post.id} 
                   post={post} 
                   onLike={likePost} 
-                  onComment={handleAddComment}
+                  onComment={getCommentHandler(post.id)}
                   hasLiked={false} 
                 />
               ))}
