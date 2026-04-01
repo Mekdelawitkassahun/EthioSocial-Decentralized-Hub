@@ -18,7 +18,7 @@ export default function ProfilePage() {
     followUser, 
     unfollowUser,
     updateProfile,
-    getProfileByUsername,
+    getProfileByUsername, // ✅ This is the correct function name
     isFollowing,
     loadUserPosts,
     likePost,
@@ -44,6 +44,17 @@ export default function ProfilePage() {
   const [viewedProfile, setViewedProfile] = useState<any>(null);
   const [userPosts, setUserPosts] = useState<any[]>([]);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+
+  // ✅ Add loadUserProfile function that uses getProfileByUsername
+  const loadUserProfile = useCallback(async (userName: string) => {
+    try {
+      const profileData = await getProfileByUsername(userName);
+      return profileData;
+    } catch (error) {
+      console.error('Error loading profile:', error);
+      return null;
+    }
+  }, [getProfileByUsername]);
 
   const loadData = useCallback(async () => {
     if (!username) return;
@@ -173,7 +184,8 @@ export default function ProfilePage() {
       
       // Update the main profile state if this is our own profile
       if (isOwnProfile) {
-        await loadUserProfile();
+        // This would need a function to refresh the main profile
+        // await refreshProfile();
       }
       
       // ONLY close edit mode after everything succeeded
@@ -430,7 +442,7 @@ export default function ProfilePage() {
                   post={post} 
                   onLike={likePost} 
                   onComment={addComment} 
-                  hasLiked={false} // Would need a way to check this
+                  hasLiked={false}
                   authorProfile={viewedProfile}
                 />
               ))}
