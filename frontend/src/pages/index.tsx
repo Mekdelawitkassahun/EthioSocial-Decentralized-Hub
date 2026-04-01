@@ -46,17 +46,20 @@ export default function Home() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   
-  // ✅ FIXED: Correct argument order - postType before tags
+  // ✅ FIXED: Correct argument order for createPost
   const handleCreatePost = async (
     content: string, 
     mediaHash: string, 
     postType: PostType
   ) => {
-    // Create a typed empty array for tags
     const tags: string[] = [];
-    
-    // Call createPost with correct order: content, mediaHash, postType, tags
     await createPost(content, mediaHash, postType, tags);
+  };
+  
+  // ✅ FIXED: Create a wrapper for addComment to match PostCard's expected signature
+  // If PostCard expects just content string, we need to bind the postId
+  const handleAddComment = async (postId: number, content: string) => {
+    await addComment(postId, content);
   };
   
   const handleCreateProfile = async () => {
@@ -243,7 +246,7 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* Create Post Component - USING THE WRAPPER FUNCTION */}
+        {/* Create Post Component */}
         <div className={!profile ? 'opacity-30 grayscale pointer-events-none' : ''}>
           <CreatePost onCreatePost={handleCreatePost} profile={profile} />
         </div>
@@ -283,7 +286,7 @@ export default function Home() {
                   key={post.id} 
                   post={post} 
                   onLike={likePost} 
-                  onComment={addComment} 
+                  onComment={handleAddComment}
                   hasLiked={false} 
                 />
               ))}
