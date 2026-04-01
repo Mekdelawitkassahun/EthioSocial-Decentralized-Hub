@@ -54,7 +54,8 @@ export default function CreatePost({ onCreatePost, profile }: CreatePostProps) {
     }
 
     try {
-      await onCreatePost(content, mediaHash, selectedFile ? PostType.IMAGE : PostType.TEXT, []); // Pass empty tags array
+      // Fixed: Removed the 4th argument (empty tags array)
+      await onCreatePost(content, mediaHash, selectedFile ? PostType.IMAGE : PostType.TEXT);
       setContent('');
       setSelectedFile(null);
       setImagePreview(null);
