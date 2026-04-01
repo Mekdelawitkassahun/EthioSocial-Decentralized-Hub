@@ -46,18 +46,30 @@ export default function Home() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   
-  // ✅ FIXED: Wrapper function with properly typed empty array
+  // ✅ FIXED: Pass a PostType object instead of positional arguments
   const handleCreatePost = async (
     content: string, 
     mediaHash: string, 
     postType: PostType
   ) => {
-    // Create a typed empty array for tags
-    const tags: string[] = [];
+    // Create the post object matching the PostType interface
+    const postData = {
+      content: content,
+      mediaHash: mediaHash,
+      tags: [] as string[], // Empty array for tags with explicit type
+      postType: postType,
+      // Add any other required fields from your PostType interface here
+      // For example:
+      // id: string,
+      // author: string,
+      // createdAt: number,
+      // likes: string[],
+      // comments: Comment[],
+      // etc.
+    };
     
-    // Call the original createPost from the hook
-    // Adjust the parameter order based on what your createPost expects
-    await createPost(content, mediaHash, tags, postType);
+    // Call createPost with the PostType object
+    await createPost(postData);
   };
   
   const handleCreateProfile = async () => {
