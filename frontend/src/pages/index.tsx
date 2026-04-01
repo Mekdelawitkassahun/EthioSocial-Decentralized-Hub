@@ -46,30 +46,17 @@ export default function Home() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   
-  // ✅ FIXED: Pass a PostType object instead of positional arguments
+  // ✅ FIXED: Pass 4 separate arguments to match createPost signature
   const handleCreatePost = async (
     content: string, 
     mediaHash: string, 
     postType: PostType
   ) => {
-    // Create the post object matching the PostType interface
-    const postData = {
-      content: content,
-      mediaHash: mediaHash,
-      tags: [] as string[], // Empty array for tags with explicit type
-      postType: postType,
-      // Add any other required fields from your PostType interface here
-      // For example:
-      // id: string,
-      // author: string,
-      // createdAt: number,
-      // likes: string[],
-      // comments: Comment[],
-      // etc.
-    };
+    // Create a typed empty array for tags
+    const tags: string[] = [];
     
-    // Call createPost with the PostType object
-    await createPost(postData);
+    // Call createPost with 4 arguments (content, mediaHash, tags, postType)
+    await createPost(content, mediaHash, tags, postType);
   };
   
   const handleCreateProfile = async () => {
