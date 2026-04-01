@@ -1,8 +1,6 @@
-# 🚀 EthioSocial: A Decentralized Social Media Ecosystem for Ethiopia
+ 🚀 EthioSocial: A Decentralized Social Media Ecosystem for Ethiopia
 
 EthioSocial is a cutting-edge, decentralized social media platform built specifically for the Ethiopian community. It leverages blockchain technology to return data ownership to users, enable direct creator monetization, and provide a censorship-resistant space for expression.
-
----
 
 ## 📋 Table of Contents
 1. [Vision & Mission](#-vision--mission)
@@ -10,21 +8,17 @@ EthioSocial is a cutting-edge, decentralized social media platform built specifi
 3. [Technical Stack](#-technical-stack)
 4. [Smart Contract Architecture](#-smart-contract-architecture)
 5. [Frontend & UX Excellence](#-frontend--ux-excellence)
-6. [30-Minute Presentation Guide](#-30-minute-presentation-guide)
-7. [Installation & Deployment](#-installation--deployment)
-8. [Design System](#-design-system)
+6. [Installation & Deployment](#-installation--deployment)
+7. [Design System](#-design-system)
 
----
-
-## 🌟 Vision & Mission
+🌟 Vision & Mission
 Traditional social media platforms are centralized entities that profit from user data and often apply opaque moderation policies. **EthioSocial** changes this by:
 - **Ownership**: Every post, profile, and message is owned by the user's wallet.
 - **Culture**: A UI inspired by Ethiopian heritage, supporting local languages and cultural identity.
 - **Monetization**: Built-in ETH tipping allows creators to earn directly from their audience without intermediaries.
 
 ---
-
-## ✨ Core Features
+✨ Core Features
 
 ### 1. Decentralized Identity (Web3 Profiles)
 Users create permanent identities on the Sepolia blockchain. Profiles include:
@@ -74,48 +68,20 @@ The `EthioSocial.sol` contract is designed for security and efficiency:
 
 ---
 
-## 🎨 Frontend & UX Excellence
+ 🎨 Frontend & UX Excellence
 
-### Client-Side Image Compression
+ Client-Side Image Compression
 To ensure the platform remains fast even with decentralized storage, we implemented a **Canvas-based compression engine**. Images are resized and optimized before being sent to IPFS, drastically reducing gas costs and upload times.
 
-### The "Glitch-Free" Hook System
+ The "Glitch-Free" Hook System
 The custom `useEthioSocial` hook uses advanced React patterns (`useCallback`, `useMemo`, and `useEffect` synchronization) to ensure:
 - No infinite re-render loops.
 - Instant UI updates after blockchain confirmations.
 - Automatic wallet disconnection and account switching.
 
----
+ 🚀 Installation & Deployment
 
-## 🎤 30-Minute Presentation Guide
-
-Use this structure to impress your audience from start to finish:
-
-### Part 1: The "Why" (0:00 - 0:05)
-- **Problem**: Show a slide about data privacy and censorship.
-- **Solution**: Introduce EthioSocial as the Ethiopian answer to Web3 social.
-- **Demo**: Show the landing page and the "Connect Wallet" flow.
-
-### Part 2: Identity & Content (0:05 - 0:15)
-- **Identity**: Create or edit a profile. Explain that "Saving Changes" is actually a blockchain transaction.
-- **Content**: Create a post with an image. Explain the role of **IPFS**—how the image lives "everywhere" while the link lives on the blockchain.
-- **Tipping**: Send a small amount of ETH to a post. Show how the balance moves directly to the author.
-
-### Part 3: Social & Private (0:15 - 0:25)
-- **Search**: Search for a user by address. Show the **Follow** interaction.
-- **DMs**: Navigate to the Messages page. Send a DM. Explain that this message is now permanent and peer-to-peer.
-- **Logout/Switch**: Demonstrate switching wallets to show how the "Follower" count updates live for the other user.
-
-### Part 4: Technical Deep Dive & Q&A (0:25 - 0:30)
-- **Challenges**: Briefly mention solving the "gas estimation" and "UI flickering" issues.
-- **Vision**: Mention moving to Layer 2 (L2) for zero-cost interactions in the future.
-- **Q&A**: Open the floor for questions.
-
----
-
-## 🚀 Installation & Deployment
-
-### Local Development
+ Local Development
 1. **Clone & Install**:
    ```bash
    npm install
