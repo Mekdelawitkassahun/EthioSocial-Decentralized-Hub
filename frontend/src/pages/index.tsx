@@ -46,18 +46,18 @@ export default function Home() {
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
   
-  // ✅ FIXED: Correct argument order for createPost
+  // Wrapper for createPost - matches CreatePost component signature
   const handleCreatePost = async (
     content: string, 
     mediaHash: string, 
     postType: PostType
   ) => {
     const tags: string[] = [];
+    // Assuming createPost signature: (content, mediaHash, postType, tags)
     await createPost(content, mediaHash, postType, tags);
   };
   
-  // ✅ FIXED: Create a wrapper for addComment to match PostCard's expected signature
-  // If PostCard expects just content string, we need to bind the postId
+  // Wrapper for addComment - matches PostCard component signature
   const handleAddComment = async (postId: number, content: string) => {
     await addComment(postId, content);
   };
