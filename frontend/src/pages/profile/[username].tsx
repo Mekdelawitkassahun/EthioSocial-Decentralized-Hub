@@ -18,7 +18,7 @@ export default function ProfilePage() {
     followUser, 
     unfollowUser,
     updateProfile,
-    getProfileByUsername, // ✅ This is the correct function name
+    getProfileByUsername,
     isFollowing,
     loadUserPosts,
     likePost,
@@ -44,17 +44,6 @@ export default function ProfilePage() {
   const [viewedProfile, setViewedProfile] = useState<any>(null);
   const [userPosts, setUserPosts] = useState<any[]>([]);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
-
-  // ✅ Add loadUserProfile function that uses getProfileByUsername
-  const loadUserProfile = useCallback(async (userName: string) => {
-    try {
-      const profileData = await getProfileByUsername(userName);
-      return profileData;
-    } catch (error) {
-      console.error('Error loading profile:', error);
-      return null;
-    }
-  }, [getProfileByUsername]);
 
   const loadData = useCallback(async () => {
     if (!username) return;
@@ -104,7 +93,6 @@ export default function ProfilePage() {
     if (!e.target.files?.[0]) return;
     const file = e.target.files[0];
     
-    // Show immediate preview
     const previewUrl = URL.createObjectURL(file);
     setPreviews(prev => ({ ...prev, avatar: previewUrl }));
     
@@ -115,7 +103,7 @@ export default function ProfilePage() {
       toast.success('Avatar uploaded!');
     } catch (error) {
       toast.error('Failed to upload avatar');
-      setPreviews(prev => ({ ...prev, avatar: '' })); // Clear preview on failure
+      setPreviews(prev => ({ ...prev, avatar: '' }));
     } finally {
       setIsUploading(false);
     }
@@ -125,7 +113,6 @@ export default function ProfilePage() {
     if (!e.target.files?.[0]) return;
     const file = e.target.files[0];
 
-    // Show immediate preview
     const previewUrl = URL.createObjectURL(file);
     setPreviews(prev => ({ ...prev, cover: previewUrl }));
 
@@ -136,7 +123,7 @@ export default function ProfilePage() {
       toast.success('Cover photo uploaded!');
     } catch (error) {
       toast.error('Failed to upload cover');
-      setPreviews(prev => ({ ...prev, cover: '' })); // Clear preview on failure
+      setPreviews(prev => ({ ...prev, cover: '' }));
     } finally {
       setIsUploading(false);
     }
@@ -147,7 +134,6 @@ export default function ProfilePage() {
   const handleSaveProfile = async () => {
     if (!viewedProfile) return;
     
-    // Check if an upload is still in progress
     if (isUploading) {
       toast.error('Please wait for image upload to complete');
       return;
@@ -165,7 +151,6 @@ export default function ProfilePage() {
     };
 
     try {
-      // Perform the update on blockchain
       await updateProfile(
         dataToSave.username,
         dataToSave.displayName,
@@ -175,20 +160,9 @@ export default function ProfilePage() {
       );
       
       toast.success('Blockchain updated! Syncing UI...', { id: toastId });
-      
-      // Wait 2 seconds for blockchain state to stabilize across RPC nodes
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Refresh data from blockchain
       await loadData();
       
-      // Update the main profile state if this is our own profile
-      if (isOwnProfile) {
-        // This would need a function to refresh the main profile
-        // await refreshProfile();
-      }
-      
-      // ONLY close edit mode after everything succeeded
       setIsEditing(false);
       setPreviews({ avatar: '', cover: '' });
       toast.success('Profile updated successfully!', { id: toastId });
@@ -441,7 +415,7 @@ export default function ProfilePage() {
                   key={post.id} 
                   post={post} 
                   onLike={likePost} 
-                  onComment={addComment} 
+                  onComment={(content: string) => addComment(post.id, content)}  // ✅ FIXED
                   hasLiked={false}
                   authorProfile={viewedProfile}
                 />
