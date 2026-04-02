@@ -1,5 +1,8 @@
  🚀 EthioSocial: A Decentralized Social Media Ecosystem for Ethiopia
 
+live at https://effulgent-souffle-dcb7d3.netlify.app/
+
+
 EthioSocial is a cutting-edge, decentralized social media platform built specifically for the Ethiopian community. It leverages blockchain technology to return data ownership to users, enable direct creator monetization, and provide a censorship-resistant space for expression.
 
 ## 📋 Table of Contents
